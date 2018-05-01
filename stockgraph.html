@@ -1,6 +1,7 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Stock prices</title>
@@ -13,44 +14,53 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
 </head>
+
 <body>
-    <div class="bs-component">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">Stock Graph</a>
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                <a class="nav-link" href="#"><input type="text" id="stockTicker" value="MSFT"> <span class="sr-only">(current)</span><button id="go" class="btn btn-info">Go</button></a>
-                </li>
-            </ul>
-            </div>
-        </nav>
+  <div class="bs-component">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">Stock Graph</a>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">
+            <input type="text" id="stockTicker" value="MSFT">
+            <span class="sr-only">(current)</span>
+            <button id="go" class="btn btn-info">Go</button>
+          </a>
+        </li>
+      </ul>
+  </div>
+  </nav>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <table id="pricetable" class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Day</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody id="priceList"></tbody>
+        </table>
+      </div>
+      <div id="priceGraph" class="col-md-6">
+        <!-- graph of prices should go here -->
+        graph goes here
+      </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <table id="pricetable" class="table table-hover">
-                    <thead>
-                    <tr>
-                    <th scope="col">Day</th>
-                    <th scope="col">Price</th>
-                    </tr>
-                    </thead>
-                    <tbody id="priceList"></tbody>
-                </table>
-            </div>
-            <div id="priceGraph" class="col-md-6">
-            <!-- graph of prices should go here -->
-            graph goes here
-            </div>
-        </div>
-    </div>
+  </div>
 
 
-    <script src="scripts/jquery-3.3.1.min.js"></script>
-    <script src="scripts/bootstrap.min.js"></script>
-    <script src="scripts/bootstrap.bundle.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-    <script src="scripts/app.js"></script>
+  <script src="scripts/jquery-3.3.1.min.js"></script>
+  <script src="scripts/bootstrap.min.js"></script>
+  <script src="scripts/bootstrap.bundle.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://unpkg.com/react-plotly.js@latest/dist/create-plotly-component.js"></script>
+  <!-- <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/6.1.19/browser.js"></script> -->
+  <script src="scripts/app.js"></script>
 </body>
+
 </html>
