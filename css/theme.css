@@ -1,1 +1,7 @@
-#stockTicker { width:25%;}
+#stock-ticker {
+  width: 25%;
+}
+
+#price-graph {
+  height: 750px;
+}
