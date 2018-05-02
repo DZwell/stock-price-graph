@@ -22,7 +22,7 @@
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <a class="nav-link" href="#">
-            <input type="text" style="text-transform:uppercase" id="stockTicker" value="MSFT">
+            <input type="text" style="text-transform:uppercase" id="stock-ticker" value="MSFT">
             <span class="sr-only">(current)</span>
             <button id="go" class="btn btn-info">Go</button>
           </a>
@@ -34,17 +34,17 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <table id="pricetable" class="table table-hover">
+        <table id="price-table" class="table table-hover">
           <thead>
             <tr>
               <th scope="col">Day</th>
               <th scope="col">Price</th>
             </tr>
           </thead>
-          <tbody id="priceList"></tbody>
+          <tbody id="price-list"></tbody>
         </table>
       </div>
-      <div id="priceGraph" class="col-md-6">
+      <div id="price-graph" class="col-md-6">
         <!-- graph of prices should go here -->
         graph goes here
       </div>
