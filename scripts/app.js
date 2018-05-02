@@ -1,36 +1,44 @@
-// var LineGraph;
-// import('./components/LineGraph.jsx').then((result) => {
-//     LineGraph = result;
-// });
-
 if (!window.app) {
   window.app = {
     Load: _Load,
     GetStockPrices: _GetStockPrices,
     RenderPrices: _RenderPrices,
     RenderGraph: _RenderGraph,
-    Prices: []
+    Prices: {
+      'MSFT': []
+    }
   };
 }
 
+// Form submit
+$('#go').click(() => {
+  app.GetStockPrices($("#stockTicker").val());
+});
+
 function _Load() {
-  var prices = app.GetStockPrices($("#stockTicker").val());
+  app.GetStockPrices("MSFT");
 }
 
 function _GetStockPrices(ticker) {
-  console.log(ticker, 'ticker');
+  var formattedTicker = ticker.toUpperCase(); // Keep stock symbol format consistent
   var urlTemplate = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol={ticker}&apikey=ES0RLUA5ZTYI9VFC";
-  var urlToFetch = urlTemplate.replace("{ticker}", ticker);
-  console.log(urlToFetch);
-  var fetchedPrices;
+  var urlToFetch = urlTemplate.replace("{ticker}", formattedTicker);
+
+  // Add our new stock symbol to app.Prices
+  if (!app.Prices[formattedTicker]) {
+    app.Prices[formattedTicker] = [];
+  }
+
   $.getJSON({
     url: urlToFetch, success: function (result) {
-      fetchedPrices = result["Time Series (Daily)"];
-      //normalize the price JSON we get back from the API.
-      for (var p in result["Time Series (Daily)"]) {
-        app.Prices.push({ "DateOfPrice": p, ClosePrice: fetchedPrices[p]["4. close"] });
+      var fetchedPrices = result["Time Series (Daily)"];
+
+      for (var p in fetchedPrices) {
+        app.Prices[formattedTicker].push({ "DateOfPrice": p, ClosePrice: fetchedPrices[p]["4. close"] });
       }
-      app.RenderPrices(app.Prices);
+
+      app.RenderPrices(app.Prices[formattedTicker]);
+      app.RenderGraph(app.Prices[formattedTicker]);
     }
   });
 }
@@ -44,15 +52,12 @@ function _RenderPrices(listOfPrices) {
     rows,
     document.getElementById('priceList')
   );
-
-  
-  app.RenderGraph(app.Prices);
 }
 
 function _RenderGraph(prices) {
-  const closePrices = prices.map(item => item.ClosePrice);
-  const dates = prices.map(item => item.DateOfPrice);
-  const trace = {
+  var closePrices = prices.map(item => item.ClosePrice);
+  var dates = prices.map(item => item.DateOfPrice);
+  var trace = {
     x: dates,
     y: closePrices
   }
