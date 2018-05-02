@@ -10,7 +10,6 @@ if (!window.app) {
   };
 }
 
-// Form submit
 $('#go').click(() => {
   app.GetStockPrices($("#stockTicker").val());
 });
@@ -24,23 +23,25 @@ function _GetStockPrices(ticker) {
   var urlTemplate = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol={ticker}&apikey=ES0RLUA5ZTYI9VFC";
   var urlToFetch = urlTemplate.replace("{ticker}", formattedTicker);
 
-  // Add our new stock symbol to app.Prices
-  if (!app.Prices[formattedTicker]) {
+  if (app.Prices[formattedTicker] && app.Prices[formattedTicker].length > 0) {
+    app.RenderPrices(app.Prices[formattedTicker]);
+    app.RenderGraph(app.Prices[formattedTicker]);
+  } else {
     app.Prices[formattedTicker] = [];
-  }
 
-  $.getJSON({
-    url: urlToFetch, success: function (result) {
-      var fetchedPrices = result["Time Series (Daily)"];
+    $.getJSON({
+      url: urlToFetch, success: function (result) {
+        var fetchedPrices = result["Time Series (Daily)"];
 
-      for (var p in fetchedPrices) {
-        app.Prices[formattedTicker].push({ "DateOfPrice": p, ClosePrice: fetchedPrices[p]["4. close"] });
+        for (var p in fetchedPrices) {
+          app.Prices[formattedTicker].push({ "DateOfPrice": p, ClosePrice: fetchedPrices[p]["4. close"] });
+        }
+
+        app.RenderPrices(app.Prices[formattedTicker]);
+        app.RenderGraph(app.Prices[formattedTicker]);
       }
-
-      app.RenderPrices(app.Prices[formattedTicker]);
-      app.RenderGraph(app.Prices[formattedTicker]);
-    }
-  });
+    });
+  }
 }
 
 function _RenderPrices(listOfPrices) {
@@ -57,6 +58,7 @@ function _RenderPrices(listOfPrices) {
 function _RenderGraph(prices) {
   var closePrices = prices.map(item => item.ClosePrice);
   var dates = prices.map(item => item.DateOfPrice);
+  console.log(closePrices);
   var trace = {
     x: dates,
     y: closePrices
