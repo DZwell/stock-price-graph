@@ -26,8 +26,8 @@ function load() {
 }
 
 function getStockPrices(ticker) {
-  var formattedTicker = ticker.toUpperCase(); // Keep stock symbol format consistent
-  var urlToFetch = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${ticker}&apikey=ES0RLUA5ZTYI9VFC`;
+  const formattedTicker = ticker.toUpperCase(); // Keep stock symbol format consistent
+  const urlToFetch = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${ticker}&apikey=ES0RLUA5ZTYI9VFC`;
 
   if (app.prices[formattedTicker] && app.prices[formattedTicker].length > 0) {
     app.renderPrices(app.prices[formattedTicker]);
@@ -36,11 +36,11 @@ function getStockPrices(ticker) {
     app.prices[formattedTicker] = [];
 
     $.getJSON({
-      url: urlToFetch, success: function (result) {
-        var fetchedPrices = result["Time Series (Daily)"];
+      url: urlToFetch, success: (result) => {
+        const fetchedPrices = result["Time Series (Daily)"];
         console.log(fetchedPrices);
 
-        for (var p in fetchedPrices) {
+        for (let p in fetchedPrices) {
           app.prices[formattedTicker].push({
             dateOfPrice: p,
             open: fetchedPrices[p]["1. open"],
@@ -58,8 +58,8 @@ function getStockPrices(ticker) {
 }
 
 function renderPrices(listOfPrices) {
-  var rows = [];
-  for (var i = 0; i < listOfPrices.length; i++) {
+  const rows = [];
+  for (let i = 0; i < listOfPrices.length; i++) {
     rows.push(React.createElement(StockPriceRow, listOfPrices[i]));
   }
   ReactDOM.render(
@@ -69,11 +69,11 @@ function renderPrices(listOfPrices) {
 }
 
 function renderGraph(prices) {
-  var dates = [];
-  var closePrice = [];
-  var openPrice = [];
-  var priceLow = [];
-  var priceHigh = [];
+  const dates = [];
+  const closePrice = [];
+  const openPrice = [];
+  const priceLow = [];
+  const priceHigh = [];
 
   prices.forEach(item => {
     dates.push(item.dateOfPrice);
@@ -83,28 +83,28 @@ function renderGraph(prices) {
     priceHigh.push(item.high);
   });
 
-  var high = {
+  const high = {
     x: dates,
     y: priceHigh,
     name: 'High',
     mode: 'lines+markers'
   }
 
-  var low = {
+  const low = {
     x: dates,
     y: priceLow,
     name: 'Low',
     mode: 'lines+markers'
   }
 
-  var close = {
+  const close = {
     x: dates,
     y: closePrice,
     name: 'Close',
     mode: 'lines+markers'
   }
 
-  var open = {
+  const open = {
     x: dates,
     y: openPrice,
     name: 'Open',
@@ -116,10 +116,10 @@ function renderGraph(prices) {
 
 class StockPriceRow extends React.Component {
   render() {
-    var cells = [];
-    var priceElement = React.createElement("td", null, this.props.dateOfPrice);
+    const cells = [];
+    const priceElement = React.createElement("td", null, this.props.dateOfPrice);
     cells.push(priceElement);
-    var dateElement = React.createElement("td", null, this.props.close);
+    const dateElement = React.createElement("td", null, this.props.close);
     cells.push(dateElement);
     return React.createElement('tr', null, cells);
   }
