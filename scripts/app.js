@@ -10,9 +10,9 @@ if (!window.app) {
   };
 }
 
-$("#stock-ticker").keyup(function(event) {
+$("#stock-ticker").keyup(function (event) {
   if (event.keyCode === 13) {
-      $("#go").click();
+    $("#go").click();
   }
 });
 
@@ -27,8 +27,7 @@ function load() {
 
 function getStockPrices(ticker) {
   var formattedTicker = ticker.toUpperCase(); // Keep stock symbol format consistent
-  var urlTemplate = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol={ticker}&apikey=ES0RLUA5ZTYI9VFC";
-  var urlToFetch = urlTemplate.replace("{ticker}", formattedTicker);
+  var urlToFetch = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${ticker}&apikey=ES0RLUA5ZTYI9VFC`;
 
   if (app.prices[formattedTicker] && app.prices[formattedTicker].length > 0) {
     app.renderPrices(app.prices[formattedTicker]);
@@ -70,41 +69,19 @@ function renderPrices(listOfPrices) {
 }
 
 function renderGraph(prices) {
-  //   var traceObject = {
-  //     dates: [],
-  //     close: [],
-  //     open: [],
-  //     low: [],
-  //     hight: []
-  //   };
+  var dates = [];
+  var closePrice = [];
+  var openPrice = [];
+  var priceLow = [];
+  var priceHigh = [];
 
-  //   for (var i = 0; i < prices.length; i++) { 
-
-  //   }
-
-  //   var lines = prices.map((item) => {
-
-  //     if (! traceObject[item]) {
-  //       traceObject[key] = prices.map(item => item.key)
-  //     }
-  //   });
-  // console.log(lines);
-
-  // var graphLines = prices.map((item)) => {
-  //   if (item !== 'dateOfPrice') {
-  //    return {
-  //       x: item.dateOfPrice,
-  //       y: prices.map(price => ,
-  //       type: 'scatter'
-  //     }
-  //   };
-  // });
-
-  var dates = prices.map(item => item.dateOfPrice);
-  var priceHigh = prices.map(item => item.high);
-  var priceLow = prices.map(item => item.low);
-  var closePrice = prices.map(item => item.close);
-  var openPrice = prices.map(item => item.open);
+  prices.forEach(item => {
+    dates.push(item.dateOfPrice);
+    closePrice.push(item.close);
+    openPrice.push(item.open);
+    priceLow.push(item.low);
+    priceHigh.push(item.high);
+  });
 
   var high = {
     x: dates,
