@@ -1,0 +1,36 @@
+{
+  "name": "stock-price-graph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register ./tests/tests",
+    "start": "webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DZwell/stock-price-graph.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DZwell/stock-price-graph/issues"
+  },
+  "homepage": "https://github.com/DZwell/stock-price-graph#readme",
+  "dependencies": {
+    "plotly": "^1.0.6",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "webpack": "^4.6.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "bootstrap": "^4.1.1",
+    "jquery": "^3.3.1",
+    "mocha": "^5.1.1",
+    "sinon": "^5.0.3",
+    "webpack-cli": "^2.1.2"
+  }
+}
