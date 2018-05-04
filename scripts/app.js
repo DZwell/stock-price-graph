@@ -1,65 +1,51 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
+import request from 'request';
 
-
-
-if (!window.app) {
-  window.app = {
-    load,
-    getStockPrices,
-    renderPrices,
-    renderGraph,
-    prices: {
-      'MSFT': []
-    }
-  };
+const PRICES = {
+  'MSFT': []
 }
 
-$("#stock-ticker").keyup(function (event) {
+let goButton = window.document.getElementById('go-button');
+let stockSymbolField = window.document.getElementById('stock-ticker');
+
+goButton.addEventListener('click', (event) => {
+  getStockPrices(stockSymbolField.value);
+});
+
+stockSymbolField.addEventListener('keydown', (event) => {
   if (event.keyCode === 13) {
-    $("#go").click();
+    getStockPrices(stockSymbolField.value);
   }
 });
 
-$('#go').click(() => {
-  app.getStockPrices($("#stock-ticker").val());
-});
-
-
-function load() {
-  app.getStockPrices("MSFT");
-}
-
-export function getStockPrices(ticker) {
+function getStockPrices(ticker) {
   const formattedTicker = ticker.toUpperCase(); // Keep stock symbol format consistent
   const urlToFetch = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${ticker}&apikey=ES0RLUA5ZTYI9VFC`;
 
-  if (app.prices[formattedTicker] && app.prices[formattedTicker].length > 0) {
-    app.renderPrices(app.prices[formattedTicker]);
-    app.renderGraph(app.prices[formattedTicker]);
+  if (PRICES[formattedTicker] && PRICES[formattedTicker].length > 0) {
+    renderPrices(PRICES[formattedTicker]);
+    renderGraph(PRICES[formattedTicker]);
   } else {
-    app.prices[formattedTicker] = [];
+    PRICES[formattedTicker] = [];
 
-    $.getJSON({
-      url: urlToFetch, success: (result) => {
-        const fetchedPrices = result["Time Series (Daily)"];
-        console.log(fetchedPrices);
-
-        for (let p in fetchedPrices) {
-
-          app.prices[formattedTicker].push({
-            dateOfPrice: p,
-            open: fetchedPrices[p]["1. open"],
-            high: fetchedPrices[p]["2. high"],
-            low: fetchedPrices[p]["3. low"],
-            close: fetchedPrices[p]["4. close"],
-          });
-        }
-
-        app.renderPrices(app.prices[formattedTicker]);
-        app.renderGraph(app.prices[formattedTicker]);
+    request(urlToFetch, (error, response, body) => {
+      const jsonBody = JSON.parse(body);
+      const fetchedPrices = jsonBody["Time Series (Daily)"];
+  
+      for (let p in fetchedPrices) {
+  
+        PRICES[formattedTicker].push({
+          dateOfPrice: p,
+          open: fetchedPrices[p]["1. open"],
+          high: fetchedPrices[p]["2. high"],
+          low: fetchedPrices[p]["3. low"],
+          close: fetchedPrices[p]["4. close"],
+        });
       }
+  
+      renderPrices(PRICES[formattedTicker]);
+      renderGraph(PRICES[formattedTicker]);
     });
   }
 }
@@ -132,4 +118,13 @@ class StockPriceRow extends React.Component {
   }
 }
 
-$(app.load());
+document.addEventListener('DOMContentLoaded', () => {
+  getStockPrices("MSFT");
+}, false);
+
+export default {
+  getStockPrices,
+  renderPrices,
+  renderGraph,
+  PRICES
+}
