@@ -1,3 +1,9 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
+
+
+
 if (!window.app) {
   window.app = {
     load,
@@ -25,7 +31,7 @@ function load() {
   app.getStockPrices("MSFT");
 }
 
-function getStockPrices(ticker) {
+export function getStockPrices(ticker) {
   const formattedTicker = ticker.toUpperCase(); // Keep stock symbol format consistent
   const urlToFetch = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${ticker}&apikey=ES0RLUA5ZTYI9VFC`;
 
@@ -41,6 +47,7 @@ function getStockPrices(ticker) {
         console.log(fetchedPrices);
 
         for (let p in fetchedPrices) {
+
           app.prices[formattedTicker].push({
             dateOfPrice: p,
             open: fetchedPrices[p]["1. open"],
