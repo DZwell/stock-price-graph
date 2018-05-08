@@ -6,19 +6,6 @@ const PRICES = {
   'MSFT': []
 }
 
-let goButton = window.document.getElementById('go-button');
-let stockSymbolField = window.document.getElementById('stock-ticker');
-
-goButton.addEventListener('click', (event) => {
-  getStockPrices(stockSymbolField.value);
-});
-
-stockSymbolField.addEventListener('keydown', (event) => {
-  if (event.keyCode === 13) {
-    getStockPrices(stockSymbolField.value);
-  }
-});
-
 function getStockPrices(ticker) {
   const formattedTicker = ticker.toUpperCase(); // Keep stock symbol format consistent
   const urlToFetch = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${ticker}&apikey=ES0RLUA5ZTYI9VFC`;
@@ -118,13 +105,6 @@ class StockPriceRow extends React.Component {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  getStockPrices("MSFT");
-}, false);
-
-export default {
-  getStockPrices,
-  renderPrices,
-  renderGraph,
-  PRICES
+export {
+  getStockPrices
 }
